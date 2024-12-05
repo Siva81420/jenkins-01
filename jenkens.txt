@@ -1,0 +1,244 @@
+What is Jenkins?
+
+Jenkins is an open source automation tool.
+
+It helps automate the parts of software development related to building,
+testing, and deploying, facilitating continuous  integration and continuous delivery. 
+
+What is Jenkins and why we use it?
+CI Contineoues integation  /CD Contineous delevery 
+Jenkins is used to build and test your product continuously, so developers
+can continuously integrate changes into the build. 
+Jenkins is the most popular open source CI/CD  tool in the present market
+and is used in support of DevOps, alongside  other cloud native tools.
+
+
+Jenkins Architecture
+
+The Jenkins CI server checks the repository at regular intervals and pulls any newly 
+available code. The Build Server builds the code into an executable file. In case 
+the build fails, feedback is sent to the developers. Jenkins deploys the build 
+application to the test server
+
+Jenkins utilizes Master-Slave architecture for managing builds that are distributed.
+In the distributed form communication between Master and Slave happens using TCP/IP
+
+
+
+-- > open source 
+
+-- > Easy installation 
+
+-- > Easy GUI with few option ( GUI )  
+
+-- > Distributed builds 
+
+ v1<--->v2
+
+--- > Track( when changes happend ) & REvert change  ( new build is not working we can Revert back Easily ) 
+
+
+
+--Different types of CI tools in the market now 
+
+Jenkins ( most popular tool )  2000 + 
+
+Bamboo  
+
+Circleci 
+
+Teamcity 
+
+awsdevops ( aws services) ( ci /cd pipeline )
+
+azuredevops( ci/cd pipeline)
+
+What is CI ?
+
+CI/CD or CICD is the combined practices of continuous integration and either continuous delivery or
+continuous deployment.CI/CD bridges the gaps between development and operation activities and teams
+by enforcing automation in building, testing and deployment of applications
+
+
+Let's see how Jenkins works. 
+
+First of all, a developer commits the code to the source code repository. 
+Meanwhile, the Jenkins checks the repository at regular intervals for changes.
+Soon after a commit occurs, the Jenkins server finds the changes that have occurred in 
+the source code repository. 
+Jenkins will draw those changes and will start preparing a new build.
+If the build fails, then the concerned team will be notified.
+If built is successful, then Jenkins server deploys the built in the test server.
+After testing, Jenkins server generates a feedback and then notifies the developers about the build and test results.
+It will continue to verify the source code repository for changes made in the source code and the whole process
+keeps on repeating.
+
+
+
+
+
+--->Install Jenkins on AWS EC2<------
+
+
+step-1
+launch Instance with Amazon Linux with t2 medim and allow 22, 8080 ports in SG
+step-2
+After connecting instance we will create a jenkins user profile for jenkins server with password authentication
+now we will collect jenkins installation process from docs.....
+user profile management:
+#visudo
+#vi /etc/ssh/sshd_config
+# systemctl reload sshd  
+
+Now login with jenkins server using with user name & passwd
+then check user profile path /home/jenkinsadmin
+
+
+ls -la
+check .ssh directory (to see under key pair file)
+
+# Add required dependencies for the jenkins package
+ sudo amazon-linux-extras install java-openjdk11
+
+#rpm -qa jenkins
+
+Now check in google search using "jenkins installation linux"
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+sudo yum upgrade
+
+
+sudo yum install jenkins
+sudo systemctl daemon-reload
+
+______________________________________________________________________
+You can enable the Jenkins service to start at boot with the command:
+
+sudo systemctl enable jenkins
+You can start the Jenkins service with the command:
+
+sudo systemctl start jenkins
+You can check the status of the Jenkins service using the command:
+
+sudo systemctl status jenkins
+
+
+java --version
+whereis java
+jenkins --version
+
+
+finaly we will connect jenkens server from browser with help of port number
+
+IP address with port
+145.125.145.142:8080
+
+using below key we can connect jenkins master server
+
+________________________________
+
+Now we can install suggested plugis then create a admin user account
+
+Install suggested plugins - to install the recommended set of plugins, which are based on most common use cases.
+
+Select plugins to install - to choose which set of plugins to initially install. When you first access
+ the plugin selection page, the suggested plugins are selected by default.
+
+
+Part-II
+
+Now go to jenkins manager then add slave node
+
+Launch slave node using EC2 then install JAVA same version  (sudo yum install java-17-openjdk)
+
+Now go to Manage jenkins then select node and add name and select Permanent Agent
+ 
+
+Permanent Agent:
+
+Adds a plain, permanent agent to Jenkins. This is called "permanent" because Jenkins doesn’t provide 
+higher level of integration with these agents, such as dynamic provisioning. Select this type if no 
+other agent types apply — for example such as when you are adding a physical computer, virtual machines
+managed outside Jenkins, etc.
+
+Number of executors 4
+
+Remote root directory:
+/home/ec2-user/jenkins
+Label:
+dev/test/pro
+Usage:
+
+only build jobs with label expressions matching this node
+Launch method
+launch agent via SSH
+HOST:
+Slave node private ip address
+ssh user with private key:
+username and private key (ec2-user)
+non verifying verification strategy
+keep this agent online as much as possible
+
+Now save it then check in node machine using ls command now u can see jenkins directory
+finally node added with master server
+
+_____________________________________________________________________________
+Create a New Build Job in Jenkins master "Freestyle project"
+_____________________________________________________________________________
+
+This is the central feature of Jenkins. Jenkins will build your project, 
+combining any SCM with any build system, and this can be even used for 
+something other than software build.
+
+before job creation you can install git and Maven both in salve server:-
+
+Now create a sample job  example "firstproject1"
+
+Now create a second project using git reposatory using github
+
+
+
+sudo yum install git
+sudo wget https://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+sudo yum install -y apache-maven
+mvn --version
+sudo update-alternatives --config java
+java -version
+
+now we can go to Manage jenkins then select git path enter /usr/bin/git in tools configuration 
+
+Now go to again job configure then enter github repo link in the bellow
+
+https://github.com/smartitsoloutions/project110.git
+
+then click on apply and save 
+
+finally we select click on build now buttion.
+
+______________________________________________________
+Deploy to container:
+------------------------------------------------------
+This plugin takes a war/ear file and deploys that to 
+a running remote application server at the end of a build
+
+first install deploy to container plugin
+Now go to configure project then ....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
