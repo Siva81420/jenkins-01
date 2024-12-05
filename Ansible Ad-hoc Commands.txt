@@ -1,0 +1,39 @@
+Ansible Ad-hoc Commands:
+
+1.Write an ansible ad hoc ping command to ping 3 servers from inventory file?
+A.ansible -i /path/to/inventory/file server1:server2:server3 -m ping
+   
+2.2.Write an ansible ad hoc command to check uptime?
+A.ansible -i /path/to/inventory/file all -m command -a uptime  
+
+3.ansible ad hoc command to check the free memory or memory usage of hosts?
+A.ansible -i /path/to/inventory/file all -a "free -m"
+
+4.ansible ad hoc command to get physical memory allocated to the host?
+A. ansible all -m shell -a "cat /proc/meminfo|head -2"                 
+
+5.To check the disk space on all hosts in an inventory file?
+A.ansible -i inventory_file all -m shell -a 'df -h'      
+
+6.To list all the running processes on a specific host in an inventory file?
+A.ansible -i inventory_file specific_host -m command -a 'ps aux'    
+
+7.To run a shell command with sudo on all hosts in an inventory file?
+A.ansible -i inventory_file all -b -m shell -a 'sudo-command'        
+
+8.8.To check the status of a specific service on all hosts in an inventory file?
+A. ansible -i inventory_file all -m service -a 'name=apache2 state=started'
+
+9.9.To copy a file to all hosts in an inventory file?
+A.ansible -i inventory_file all -m copy -a 'src=/local/path/to/file dest=/remote/path/to/file mode=0644'  
+
+10.Create a Directory with 755 permission using ansible ad hoc command?
+A.ansible all -m file -a "path=/home/ubuntu/ansible state=directory mode=0755" -b        
+
+
+
+
+
+
+
+        
